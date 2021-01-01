@@ -28,7 +28,8 @@ class CampsiteInfo extends Component {
             campsites: CAMPSITES
         };
     }
-
+   
+    //This helps to set the naviagion header//
     static navigationOptions = {
         title: 'Campsite Information'
     }
