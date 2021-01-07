@@ -2,13 +2,13 @@
 import React, { Component } from 'react';
 import { ScrollView,FlatList,Text } from 'react-native';
 import { Card ,ListItem} from 'react-native-elements';
-import { Card, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import Loading from './LoadingComponent';
 
 const mapStateToProps = state => {
     return{
-        partners:this.state.partners
+        partners:state.partners
     }
 }
 
@@ -47,6 +47,29 @@ class About extends Component{
                 leftAvatar={{source: {uri: baseUrl + item.image}}}
                
             />
+            );
+        }
+
+        if (this.props.partners.isLoading) {
+            return (
+                <ScrollView>
+                    <Mission />
+                    <Card
+                        title='Community Partners'>
+                        <Loading />
+                    </Card>
+                </ScrollView>
+            );
+        }
+        if (this.props.partners.errMess) {
+            return (
+                <ScrollView>
+                    <Mission />
+                    <Card
+                        title='Community Partners'>
+                        <Text>{this.props.partners.errMess}</Text>
+                    </Card>
+                </ScrollView>
             );
         }
 

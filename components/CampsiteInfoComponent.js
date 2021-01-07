@@ -6,8 +6,8 @@ import { baseUrl } from '../shared/baseUrl';
 
 const mapStateToProps = state => {
     return{
-        campsites:this.state.campsites,
-        comments: this.state.comments
+        campsites:state.campsites,
+        comments:state.comments
     };
 };
 
