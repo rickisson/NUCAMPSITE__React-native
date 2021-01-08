@@ -100,4 +100,4 @@ class CampsiteInfo extends Component {
     }
 }
 
-export default connect(mapStateToProps)(CampsiteInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(CampsiteInfo);
