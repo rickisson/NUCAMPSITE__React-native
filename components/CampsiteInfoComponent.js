@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite } from '../redux/ActionCreators';
 import { postComment } from '../redux/ActionCreators';
+import * as Animatable from 'react-native-animatable';
 
 
 
@@ -41,6 +42,7 @@ function RenderComments({comments}) {
     };
 
     return (
+        <Animatable.View animation='fadeInUp' duration={2000} delay={1000}>
         <Card title='Comments'>
             <FlatList
                 data={comments}
@@ -48,6 +50,7 @@ function RenderComments({comments}) {
                 keyExtractor={item => item.id.toString()}
             />
         </Card>
+        </Animatable.View>
     );
 }
 
@@ -57,6 +60,7 @@ function RenderCampsite(props) {
 
     if (campsite) {
         return (
+            <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
 
             <Card
                 featuredTitle={campsite.name}
@@ -85,6 +89,7 @@ function RenderCampsite(props) {
                 </View>
                 
             </Card>
+            </Animatable.View>
 
         );
     }
