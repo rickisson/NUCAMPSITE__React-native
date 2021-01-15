@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card,Icon, Input, Rating } from 'react-native-elements';
-import { Text, View, ScrollView, FlatList,Modal,Button,StyleSheet } from 'react-native';
+import { Text, View, ScrollView, FlatList,Modal,Button,StyleSheet ,Alert, PanResponder } from 'react-native';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite } from '../redux/ActionCreators';
@@ -58,9 +58,51 @@ function RenderCampsite(props) {
 
     const {campsite} = props;
 
+    //This is to help create an annimation with the onPanResponderGrand. Not mandatory//
+    const view = React.createRef();
+
+    const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
+
+    const panResponder = PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        
+        //works with React.CreateRef() for rubberband animation//  
+        onPanResponderGrant: () => {
+            view.current.rubberBand(1000)
+            .then(endState => console.log(endState.finished ? 'finished' : 'canceled'));
+        },
+
+        onPanResponderEnd: (e, gestureState) => {
+            console.log('pan responder end', gestureState);
+            if (recognizeDrag(gestureState)) {
+                Alert.alert(
+                    'Add Favorite',
+                    'Are you sure you wish to add ' + campsite.name + ' to favorites?',
+                    [
+                        {
+                            text: 'Cancel',
+                            style: 'cancel',
+                            onPress: () => console.log('Cancel Pressed')
+                        },
+                        {
+                            text: 'OK',
+                            onPress: () => props.favorite ?
+                                console.log('Already set as a favorite') : props.markFavorite()
+                        }
+                    ],
+                    { cancelable: false }
+                );
+            }
+            return true;
+        }
+    });
+
     if (campsite) {
         return (
-            <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+            <Animatable.View animation='fadeInDown' duration={2000} delay={1000}
+            {...panResponder.panHandlers}
+            ref={view}
+            >
 
             <Card
                 featuredTitle={campsite.name}
