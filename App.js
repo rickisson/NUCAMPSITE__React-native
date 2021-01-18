@@ -6,7 +6,6 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import Loading from './components/LoadingComponent';
 
 
-const store = ConfigureStore();
 
 const { persistor, store } = ConfigureStore();
 

@@ -58,6 +58,10 @@ function RenderCampsite(props) {
 
     const {campsite} = props;
 
+    const recognizeComment = ({dx}) => (dx > 200) ? true : false;
+
+    
+
     //This is to help create an annimation with the onPanResponderGrand. Not mandatory//
     const view = React.createRef();
 
@@ -92,7 +96,13 @@ function RenderCampsite(props) {
                     ],
                     { cancelable: false }
                 );
-            }
+
+              }
+
+              else if(recognizeComment(gestureState)){
+                  props.onShowModal();
+              }
+            
             return true;
         }
     });
