@@ -3,6 +3,7 @@ import { Text, View, ScrollView, StyleSheet,
     Picker, Switch, Button,Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Animatable from 'react-native-animatable';
+import * as Notifications from 'expo-notifications';
 
 
 
@@ -47,8 +48,12 @@ alertHandler () {
             },
             {
                 text: 'OK',
-                onPress: () => this.resetForm(),
-            },
+                onPress: () => {
+                    this.resetForm();
+                    this.presentLocalNotification(this.state.date.toLocaleDateString('en-US'));
+                }
+               
+             },
         ],
         { cancelable: false }
     )
@@ -68,11 +73,36 @@ alertHandler () {
         
     }
 
+    //async request to handle notification when a campsite is reserved//
+    async presentLocalNotification(date) {
+        function sendNotification() {
+            Notifications.setNotificationHandler({
+                handleNotification: async () => ({
+                    shouldShowAlert: true
+                })
+            });
+
+            Notifications.scheduleNotificationAsync({
+                content: {
+                    title: 'Your Campsite Reservation Search',
+                    body: `Search for ${date} requested`
+                },
+                trigger: null
+            });
+        }
+
+        let permissions = await Notifications.getPermissionsAsync();
+        if (!permissions.granted) {
+            permissions = await Notifications.requestPermissionsAsync();
+        }
+        if (permissions.granted) {
+            sendNotification();
+        }
+    }
+
     render() {
 
-    
-
-        return (
+         return (
             <Animatable.View animation='zoomIn'duration={2000} delay={1000}> 
                <ScrollView>
                 <View style={styles.formRow}>
