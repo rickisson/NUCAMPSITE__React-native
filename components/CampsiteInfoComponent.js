@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card,Icon, Input, Rating } from 'react-native-elements';
-import { Text, View, ScrollView, FlatList,Modal,Button,StyleSheet ,Alert, PanResponder } from 'react-native';
+import { Text, View, ScrollView, FlatList,Modal,Button,StyleSheet ,Alert, PanResponder,Share } from 'react-native';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite } from '../redux/ActionCreators';
@@ -107,6 +107,17 @@ function RenderCampsite(props) {
         }
     });
 
+    //function to activate sharing//
+    const shareCampsite = (title, message, url) => {
+        Share.share({
+            title: title,
+            message: `${title}: ${message} ${url}`,
+            url: url
+        },{
+            dialogTitle: 'Share ' + title
+        });
+    };
+
     if (campsite) {
         return (
             <Animatable.View animation='fadeInDown' duration={2000} delay={1000}
@@ -138,6 +149,16 @@ function RenderCampsite(props) {
                      reverse
                      onPress={() => props.onShowModal()}
                 />
+
+                    <Icon
+                            name={'share'}
+                            type='font-awesome'
+                            color='#5637DD'
+                            raised
+                            reverse
+                            onPress={() => shareCampsite(campsite.name, campsite.description, baseUrl + campsite.image)} 
+                        />
+
                 </View>
                 
             </Card>
